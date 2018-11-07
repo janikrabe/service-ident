@@ -1,0 +1,6 @@
+[package]
+name = "srvusr"
+version = "0.1.0"
+authors = ["Janik Rabe <oidentd@janikrabe.com>"]
+
+[dependencies]
