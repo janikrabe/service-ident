@@ -33,22 +33,25 @@ fn stream_get_port_pair(rs: &TcpStream) -> (u16, u16) {
 	(rs_rport, rs_lport)
 }
 
+fn ident_query(ident_rhost: &str, ident_rport: u16, rs_rport: u16, rs_lport: u16) -> String {
+	match TcpStream::connect((&ident_rhost[..], ident_rport)) {
+		Ok(mut is) => {
+			writeln!(is, "{},{}", rs_rport, rs_lport)
+				.expect("Failed to send Ident query");
+			let mut resp = String::new();
+			is.read_to_string(&mut resp)
+				.expect("Failed to read Ident reply");
+			return resp;
+		},
+		Err(e) => fail(&format!("Failed to connect to Ident server: {}", e)),
+	}
+}
+
 fn get_reply(srv_rhost: &str, srv_rport: u16, ident_rhost: &str, ident_rport: u16) -> String {
 	match TcpStream::connect((&srv_rhost[..], srv_rport)) {
 		Ok(rs) => {
 			let (rs_rport, rs_lport) = stream_get_port_pair(&rs);
-
-			match TcpStream::connect((&ident_rhost[..], ident_rport)) {
-				Ok(mut is) => {
-					writeln!(is, "{},{}", rs_rport, rs_lport)
-						.expect("Failed to send Ident query");
-					let mut resp = String::new();
-					is.read_to_string(&mut resp)
-						.expect("Failed to read Ident reply");
-					return resp;
-				},
-				Err(e) => fail(&format!("Failed to connect to Ident server: {}", e)),
-			}
+			ident_query(ident_rhost, ident_rport, rs_rport, rs_lport)
 		},
 		Err(e) => fail(&format!("Failed to connect to remote server: {}", e)),
 	}
