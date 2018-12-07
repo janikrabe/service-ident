@@ -73,7 +73,7 @@ fn main() {
 					let mut resp = String::new();
 					is.read_to_string(&mut resp)
 						.expect("Failed to read Ident reply");
-					println!("Received reply: {}", resp);
+					println!("Received reply: {}", resp.trim_right());
 				},
 				Err(e) => fail(&format!("Failed to connect to Ident server: {}", e)),
 			}
