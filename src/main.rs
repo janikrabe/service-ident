@@ -1,6 +1,7 @@
 use std::env;
+use std::fmt::Display;
 use std::io::{Read, Write};
-use std::net::{IpAddr, TcpStream, SocketAddr};
+use std::net::{SocketAddr, TcpStream, ToSocketAddrs};
 use std::process::exit;
 
 static IDENT_PORT: &str = "113";
@@ -19,13 +20,26 @@ fn show_syntax() -> ! {
 	fail(&format!("Syntax: {} <host> <port> [ident-port]", prog_name));
 }
 
+fn resolve_first_sa<T, U>(to_sa: T, desc: U) -> SocketAddr
+	where T: ToSocketAddrs,
+	      U: Display,
+{
+	let mut sa_iter = to_sa.to_socket_addrs().unwrap_or_else(|e| {
+		eprintln!("Failed to resolve host {}: {}", desc, e);
+		exit(1);
+	});
+
+	sa_iter.next().unwrap_or_else(|| {
+		eprintln!("No addresses found for host {}", desc);
+		exit(1);
+	})
+}
+
 fn main() {
 	let args = env::args().collect::<Vec<_>>();
 
 	let srv_rhost = args.get(1)
-		.unwrap_or_else(|| show_syntax())
-		.parse::<IpAddr>()
-		.unwrap_or_else(|e| fail(&format!("Invalid remote address: {}", e)));
+		.unwrap_or_else(|| show_syntax());
 
 	let srv_rport = args.get(2)
 		.unwrap_or_else(|| show_syntax())
@@ -37,8 +51,8 @@ fn main() {
 		.parse::<u16>()
 		.unwrap_or_else(|e| fail(&format!("Invalid remote Ident port: {}", e)));
 
-	let srv_sockaddr = SocketAddr::new(srv_rhost, srv_rport);
-	let ident_sockaddr = SocketAddr::new(srv_rhost, ident_rport);
+	let srv_sockaddr = resolve_first_sa((&srv_rhost[..], srv_rport), srv_rhost);
+	let ident_sockaddr = resolve_first_sa((&srv_rhost[..], ident_rport), srv_rhost);
 
 	match TcpStream::connect(srv_sockaddr) {
 		Ok(rs) => {
