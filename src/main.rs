@@ -1,7 +1,6 @@
 use std::env;
-use std::fmt::Display;
 use std::io::{Read, Write};
-use std::net::{SocketAddr, TcpStream, ToSocketAddrs};
+use std::net::TcpStream;
 use std::process::exit;
 
 static IDENT_PORT: &str = "113";
@@ -18,21 +17,6 @@ fn show_syntax() -> ! {
 	};
 
 	fail(&format!("Syntax: {} <host> <port> [ident-port [ident-host]]", prog_name));
-}
-
-fn resolve_first_sa<T, U>(to_sa: T, desc: U) -> SocketAddr
-	where T: ToSocketAddrs,
-	      U: Display,
-{
-	let mut sa_iter = to_sa.to_socket_addrs().unwrap_or_else(|e| {
-		eprintln!("Failed to resolve host {}: {}", desc, e);
-		exit(1);
-	});
-
-	sa_iter.next().unwrap_or_else(|| {
-		eprintln!("No addresses found for host {}", desc);
-		exit(1);
-	})
 }
 
 fn main() {
@@ -54,10 +38,7 @@ fn main() {
 	let ident_rhost = args.get(4)
 		.unwrap_or(srv_rhost);
 
-	let srv_sockaddr = resolve_first_sa((&srv_rhost[..], srv_rport), srv_rhost);
-	let ident_sockaddr = resolve_first_sa((&ident_rhost[..], ident_rport), ident_rhost);
-
-	match TcpStream::connect(srv_sockaddr) {
+	match TcpStream::connect((&srv_rhost[..], srv_rport)) {
 		Ok(rs) => {
 			let rs_lport = rs
 				.local_addr()
@@ -69,7 +50,7 @@ fn main() {
 				.expect("Unable to determine remote address")
 				.port();
 
-			match TcpStream::connect(ident_sockaddr) {
+			match TcpStream::connect((&ident_rhost[..], ident_rport)) {
 				Ok(mut is) => {
 					writeln!(is, "{},{}", rs_rport, rs_lport)
 						.expect("Failed to send Ident query");
