@@ -34,7 +34,7 @@ fn stream_get_port_pair(rs: &TcpStream) -> (u16, u16) {
 }
 
 fn ident_query(ident_rhost: &str, ident_rport: u16, rs_rport: u16, rs_lport: u16) -> String {
-	match TcpStream::connect((&ident_rhost[..], ident_rport)) {
+	match TcpStream::connect((ident_rhost, ident_rport)) {
 		Ok(mut is) => {
 			writeln!(is, "{},{}", rs_rport, rs_lport)
 				.expect("Failed to send Ident query");
@@ -48,7 +48,7 @@ fn ident_query(ident_rhost: &str, ident_rport: u16, rs_rport: u16, rs_lport: u16
 }
 
 fn get_reply(srv_rhost: &str, srv_rport: u16, ident_rhost: &str, ident_rport: u16) -> String {
-	match TcpStream::connect((&srv_rhost[..], srv_rport)) {
+	match TcpStream::connect((srv_rhost, srv_rport)) {
 		Ok(rs) => {
 			let (rs_rport, rs_lport) = stream_get_port_pair(&rs);
 			ident_query(ident_rhost, ident_rport, rs_rport, rs_lport)
