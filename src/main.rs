@@ -17,7 +17,7 @@ fn show_syntax() -> ! {
 		None => "srvusr".to_string(),
 	};
 
-	fail(&format!("Syntax: {} <host> <port> [ident-port]", prog_name));
+	fail(&format!("Syntax: {} <host> <port> [ident-port [ident-host]]", prog_name));
 }
 
 fn resolve_first_sa<T, U>(to_sa: T, desc: U) -> SocketAddr
@@ -51,8 +51,11 @@ fn main() {
 		.parse::<u16>()
 		.unwrap_or_else(|e| fail(&format!("Invalid remote Ident port: {}", e)));
 
+	let ident_rhost = args.get(4)
+		.unwrap_or(srv_rhost);
+
 	let srv_sockaddr = resolve_first_sa((&srv_rhost[..], srv_rport), srv_rhost);
-	let ident_sockaddr = resolve_first_sa((&srv_rhost[..], ident_rport), srv_rhost);
+	let ident_sockaddr = resolve_first_sa((&ident_rhost[..], ident_rport), ident_rhost);
 
 	match TcpStream::connect(srv_sockaddr) {
 		Ok(rs) => {
