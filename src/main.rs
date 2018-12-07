@@ -19,18 +19,24 @@ fn show_syntax() -> ! {
 	fail(&format!("Syntax: {} <host> <port> [ident-port [ident-host]]", prog_name));
 }
 
+fn stream_get_port_pair(rs: &TcpStream) -> (u16, u16) {
+	let rs_rport = rs
+		.peer_addr()
+		.expect("Unable to determine remote address")
+		.port();
+
+	let rs_lport = rs
+		.local_addr()
+		.expect("Unable to determine local address")
+		.port();
+
+	(rs_rport, rs_lport)
+}
+
 fn get_reply(srv_rhost: &str, srv_rport: u16, ident_rhost: &str, ident_rport: u16) -> String {
 	match TcpStream::connect((&srv_rhost[..], srv_rport)) {
 		Ok(rs) => {
-			let rs_lport = rs
-				.local_addr()
-				.expect("Unable to determine local address")
-				.port();
-
-			let rs_rport = rs
-				.peer_addr()
-				.expect("Unable to determine remote address")
-				.port();
+			let (rs_rport, rs_lport) = stream_get_port_pair(&rs);
 
 			match TcpStream::connect((&ident_rhost[..], ident_rport)) {
 				Ok(mut is) => {
