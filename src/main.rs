@@ -73,7 +73,16 @@ fn main() {
 	let args = env::args().collect::<Vec<_>>();
 
 	let srv_rhost = args.get(1)
-		.unwrap_or_else(|| show_syntax());
+		.unwrap_or_else(|| {
+			eprintln!("{} {} - {}",
+				env!("CARGO_PKG_NAME"),
+				env!("CARGO_PKG_VERSION"),
+				env!("CARGO_PKG_DESCRIPTION"));
+			eprintln!("Written by {}",
+				env!("CARGO_PKG_AUTHORS"));
+			eprintln!();
+			show_syntax();
+	});
 
 	let srv_rport = args.get(2)
 		.unwrap_or_else(|| show_syntax())
