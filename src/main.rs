@@ -13,7 +13,7 @@ fn fail(msg: &str) -> ! {
 fn show_syntax() -> ! {
 	let prog_name = match env::args().next() {
 		Some(n) => n,
-		None => "srvusr".to_string(),
+		None => "service-ident".to_string(),
 	};
 
 	fail(&format!("Syntax: {} <host> <port> [ident-port [ident-host]]", prog_name));
