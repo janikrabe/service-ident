@@ -1,5 +1,6 @@
 [package]
 name = "service-ident"
+description = "Identify the user account running a network service"
 version = "0.1.0"
 authors = ["Janik Rabe <oidentd@janikrabe.com>"]
 
