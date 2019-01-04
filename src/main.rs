@@ -1,5 +1,5 @@
 // service-ident - identify the user account running a network service
-// Copyright (C) 2018  Janik Rabe
+// Copyright (C) 2018-2019  Janik Rabe
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
