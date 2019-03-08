@@ -19,6 +19,10 @@ The [most recent version of service-ident][latest] is available from
 service-ident can be compiled and installed with Rust's package manager,
 `cargo(1)`.
 
+```sh
+cargo install --path .
+```
+
 ## Usage
 
 service-ident can be run as follows:
