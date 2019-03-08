@@ -4,5 +4,6 @@ description = "Identify the user account running a network service"
 version = "1.0.0"
 authors = ["Janik Rabe <service-ident@janikrabe.com>"]
 license = "GPL-3.0-or-later"
+publish = false
 
 [dependencies]
