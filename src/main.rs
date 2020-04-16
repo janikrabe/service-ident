@@ -98,5 +98,5 @@ fn main() {
 		.unwrap_or(srv_rhost);
 
 	let reply = get_reply(srv_rhost, srv_rport, ident_rhost, ident_rport);
-	println!("{}", reply.trim_right());
+	println!("{}", reply.trim_end());
 }
