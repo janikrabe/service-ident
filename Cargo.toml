@@ -2,7 +2,7 @@
 name = "service-ident"
 description = "Identify the user account running a network service"
 version = "1.1.0"
-authors = ["Janik Rabe <service-ident@janikrabe.com>"]
+authors = ["Janik Rabe <info@janikrabe.com>"]
 license = "GPL-3.0-or-later"
 publish = false
 
