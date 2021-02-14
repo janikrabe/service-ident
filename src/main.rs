@@ -53,7 +53,7 @@ fn ident_query(ident_rhost: &str, ident_rport: u16, rs_rport: u16, rs_lport: u16
 			let mut resp = String::new();
 			is.read_to_string(&mut resp)
 				.expect("Failed to read Ident reply");
-			return resp;
+			resp
 		},
 		Err(e) => fail(&format!("Failed to connect to Ident server: {}", e)),
 	}
