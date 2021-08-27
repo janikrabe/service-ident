@@ -3,11 +3,11 @@
 Identify the user account running a network service
 
 service-ident lets you identify which user account is listening on a TCP/IP port
-on a remote system, given that this system is running an ident server that isn't
+on a remote system, given that this system is running an Ident server that isn't
 configured to hide this information.
 
-service-ident is designed to help system administrators verify that their ident
-server isn't divulging unnecessary information.
+service-ident is designed to help system administrators verify that their Ident
+servers aren't divulging more information than necessary.
 
 ## Download
 
