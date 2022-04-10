@@ -5,5 +5,6 @@ version = "1.1.0"
 authors = ["Janik Rabe <info@janikrabe.com>"]
 license = "GPL-3.0-or-later"
 publish = false
+edition = "2021"
 
 [dependencies]
