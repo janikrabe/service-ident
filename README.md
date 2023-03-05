@@ -11,8 +11,8 @@ servers aren't divulging more information than necessary.
 
 ## Download
 
-The [most recent version of service-ident][latest] is available from
-[files.janikrabe.com][files].
+service-ident can be downloaded from
+<https://service-ident.janikrabe.com/download>.
 
 ## Installation
 
@@ -44,6 +44,3 @@ For example, the following two commands are equivalent:
 service-ident example.com 80 113 example.com
 service-ident example.com 80
 ```
-
-[latest]: https://files.janikrabe.com/pub/service-ident/releases/latest/ "Latest release"
-[files]: https://files.janikrabe.com/ "Files"
