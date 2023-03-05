@@ -9,3 +9,4 @@ A copy of the license is included in the file 'LICENSE.DOC'
 -->
 
 [About service-ident](index.md)
+[Download](download.md)
